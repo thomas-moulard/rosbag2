@@ -101,7 +101,7 @@ ClassLoader<T>::ClassLoader(
   /***************************************************************************/
 {
   RCUTILS_LOG_DEBUG_NAMED("pluginlib.ClassLoader", "Creating ClassLoader, base = %s, address = %p",
-    base_class.c_str(), this);
+    base_class.c_str(), static_cast<void*>(this));
   try {
     ament_index_cpp::get_package_prefix(package_);
   } catch (const ament_index_cpp::PackageNotFoundError & exception) {
@@ -115,7 +115,7 @@ ClassLoader<T>::ClassLoader(
   classes_available_ = determineAvailableClasses(plugin_xml_paths_);
   RCUTILS_LOG_DEBUG_NAMED("pluginlib.ClassLoader",
     "Finished constructring ClassLoader, base = %s, address = %p",
-    base_class.c_str(), this);
+    base_class.c_str(), static_cast<void*>(this));
 }
 
 template<class T>
@@ -124,7 +124,7 @@ ClassLoader<T>::~ClassLoader()
 {
   RCUTILS_LOG_DEBUG_NAMED("pluginlib.ClassLoader",
     "Destroying ClassLoader, base = %s, address = %p",
-    getBaseClassType().c_str(), this);
+    getBaseClassType().c_str(), static_cast<void*>(this));
 }
 
 
