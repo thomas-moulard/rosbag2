@@ -1,0 +1,51 @@
+name: Lint launch_ros_sandbox
+on:
+  pull_request:
+
+jobs:
+  ament_lint_data: # Linters applicable to all packages
+    name: ${{ matrix.package }}/${{ matrix.linter }}
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+          linter: [copyright, xmllint]
+          package: [ros2bag, rosbag2, rosbag2_converter_default_plugins, rosbag2_test_common, rosbag2_tests, rosbag2_transport, shared_queues_vendor, sqlite3_vendor]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ros-tooling/setup-ros2@0.0.4
+    - uses: ros-tooling/action-ros2-lint@master
+      with:
+        linter: ${{ matrix.linter }}
+        package-name: ${{ matrix.package }}
+
+  ament_lint_cpp: # Linters applicable to C++ packages
+    name: ${{ matrix.package }}/${{ matrix.linter }}
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+          linter: [cppcheck, cpplint, uncrustify]
+          package: [rosbag2, rosbag2_converter_default_plugins, rosbag2_test_common, rosbag2_tests, rosbag2_transport]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ros-tooling/setup-ros2@0.0.4
+    - uses: ros-tooling/action-ros2-lint@master
+      with:
+        linter: ${{ matrix.linter }}
+        package-name: ${{ matrix.package }}
+  ament_lint_python: # Linters applicable to Python packages
+    name: ${{ matrix.package }}/${{ matrix.linter }}
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+          linter: [flake8, pep257]
+          package: [ros2bag]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ros-tooling/setup-ros2@0.0.4
+    - uses: ros-tooling/action-ros2-lint@master
+      with:
+        linter: ${{ matrix.linter }}
+        package-name: ${{ matrix.package }}
